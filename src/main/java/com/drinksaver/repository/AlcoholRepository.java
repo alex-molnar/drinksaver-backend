@@ -10,4 +10,5 @@ public interface AlcoholRepository {
     List<SingleNameResponse> getAlcoholTypes(Integer maxAmount);
     List<AlcoholVolumeDescription> getVolumesByAlcoholType(Integer alcoholTypeId);
     AlcoholVolumeDescription saveVolumeForAlcoholType(Integer alcoholTypeId, String name, Float volume);
+    SingleNameResponse createAlcoholType(String name, List<Integer> volumeIds);
 }

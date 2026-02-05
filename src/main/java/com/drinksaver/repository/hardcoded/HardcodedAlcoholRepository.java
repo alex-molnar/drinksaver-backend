@@ -43,11 +43,11 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
                 new AlcoholVolumeDescription("large glass", 0.25f),
                 new AlcoholVolumeDescription("bottle", 0.75f)
         ))));
-        ALCOHOL_TYPES.put(6, new AlcoholType(6, "cocktail", new ArrayList<>(List.of(
-                new AlcoholVolumeDescription("small", 0.2f),
-                new AlcoholVolumeDescription("medium", 0.25f),
-                new AlcoholVolumeDescription("large", 0.3f)
-        ))));
+//        ALCOHOL_TYPES.put(6, new AlcoholType(6, "cocktail", new ArrayList<>(List.of(
+//                new AlcoholVolumeDescription("small", 0.2f),
+//                new AlcoholVolumeDescription("medium", 0.25f),
+//                new AlcoholVolumeDescription("large", 0.3f)
+//        ))));
         ALCOHOL_TYPES.put(7, new AlcoholType(7, "cognac", new ArrayList<>(List.of(
                 new AlcoholVolumeDescription("single", 0.025f),
                 new AlcoholVolumeDescription("double", 0.05f)
@@ -168,6 +168,34 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
         AlcoholVolumeDescription newVolume = new AlcoholVolumeDescription(name, volume);
         alcoholType.volumes.add(newVolume);
         return newVolume;
+    }
+
+    @Override
+    public SingleNameResponse createAlcoholType(String name, List<Integer> volumeIds) {
+        // Generate new ID
+        int newId = ALCOHOL_TYPES.keySet().stream()
+                .max(Integer::compareTo)
+                .orElse(0) + 1;
+
+        // Create volumes list - empty if volumeIds is null or empty
+        List<AlcoholVolumeDescription> volumes = new ArrayList<>();
+        if (volumeIds != null && !volumeIds.isEmpty()) {
+            // Get volumes from existing alcohol types based on volumeIds
+            // This allows reusing common volume descriptions
+            for (Integer volumeId : volumeIds) {
+                ALCOHOL_TYPES.values().stream()
+                        .flatMap(type -> type.volumes.stream())
+                        .skip(volumeId - 1)
+                        .findFirst()
+                        .ifPresent(volumes::add);
+            }
+        }
+
+        // Create and store new alcohol type
+        AlcoholType newAlcoholType = new AlcoholType(newId, name, volumes);
+        ALCOHOL_TYPES.put(newId, newAlcoholType);
+
+        return new SingleNameResponse(newId, name);
     }
 
     private record AlcoholType(int id, String name, List<AlcoholVolumeDescription> volumes) {}

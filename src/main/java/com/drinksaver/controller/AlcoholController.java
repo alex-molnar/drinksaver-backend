@@ -1,6 +1,7 @@
 package com.drinksaver.controller;
 
 import com.drinksaver.model.dto.AlcoholVolumeDescription;
+import com.drinksaver.model.dto.NewAlcoholEntry;
 import com.drinksaver.model.dto.SingleNameResponse;
 import com.drinksaver.repository.AlcoholRepository;
 import com.drinksaver.service.InjectorService;
@@ -44,6 +45,14 @@ public class AlcoholController {
                 alcoholTypeId,
                 volumeDescription.name(),
                 volumeDescription.volume()
+        );
+    }
+
+    @PostMapping("/types")
+    public SingleNameResponse createAlcoholType(@RequestBody NewAlcoholEntry newAlcoholEntry) {
+        return alcoholRepositoriy.createAlcoholType(
+                newAlcoholEntry.name(),
+                newAlcoholEntry.VolumeIds()
         );
     }
 
