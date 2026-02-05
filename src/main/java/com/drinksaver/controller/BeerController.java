@@ -1,6 +1,6 @@
 package com.drinksaver.controller;
 
-import com.drinksaver.model.SingleNameResponse;
+import com.drinksaver.model.dto.SingleNameResponse;
 import com.drinksaver.repository.BeerRepository;
 import com.drinksaver.service.InjectorService;
 import org.springframework.beans.factory.annotation.Autowired;

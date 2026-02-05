@@ -1,6 +1,6 @@
 package com.drinksaver.repository.hardcoded;
 
-import com.drinksaver.model.SingleNameResponse;
+import com.drinksaver.model.dto.SingleNameResponse;
 import com.drinksaver.repository.RecommendationRepository;
 import org.springframework.stereotype.Repository;
 

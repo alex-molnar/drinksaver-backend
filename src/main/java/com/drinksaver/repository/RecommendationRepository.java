@@ -1,6 +1,6 @@
 package com.drinksaver.repository;
 
-import com.drinksaver.model.SingleNameResponse;
+import com.drinksaver.model.dto.SingleNameResponse;
 
 import java.util.List;
 
