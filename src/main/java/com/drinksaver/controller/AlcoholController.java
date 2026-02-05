@@ -7,6 +7,8 @@ import com.drinksaver.service.InjectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +34,17 @@ public class AlcoholController {
     @GetMapping("/types/{alcoholTypeId}/volumes")
     public List<AlcoholVolumeDescription> getVolumesByAlcoholType(@PathVariable Integer alcoholTypeId) {
         return alcoholRepositoriy.getVolumesByAlcoholType(alcoholTypeId);
+    }
+
+    @PostMapping("/types/{alcoholTypeId}/volumes")
+    public AlcoholVolumeDescription saveVolumeForAlcoholType(
+            @PathVariable Integer alcoholTypeId,
+            @RequestBody AlcoholVolumeDescription volumeDescription) {
+        return alcoholRepositoriy.saveVolumeForAlcoholType(
+                alcoholTypeId,
+                volumeDescription.name(),
+                volumeDescription.volume()
+        );
     }
 
 }
