@@ -1,9 +1,11 @@
 package com.drinksaver.repository.hardcoded;
 
+import com.drinksaver.model.dto.Beer;
 import com.drinksaver.model.dto.SingleNameResponse;
 import com.drinksaver.repository.BeerRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.stream.Stream;
 public class HardcodedBeerRepository implements BeerRepository {
 
     private static final Map<Integer, String> BEER_BRANDS = new LinkedHashMap<>();
+    private static final List<Beer> BEERS = new ArrayList<>();
     private static int nextBrandId = 1;
 
     static {
@@ -73,6 +76,12 @@ public class HardcodedBeerRepository implements BeerRepository {
         int newId = nextBrandId++;
         BEER_BRANDS.put(newId, name);
         return new SingleNameResponse(newId, name);
+    }
+
+    @Override
+    public Beer saveBeer(Beer beer) {
+        BEERS.add(beer);
+        return beer;
     }
 }
 
