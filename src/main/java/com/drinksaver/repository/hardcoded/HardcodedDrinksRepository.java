@@ -1,5 +1,6 @@
 package com.drinksaver.repository.hardcoded;
 
+import com.drinksaver.model.db.SavedDrink;
 import com.drinksaver.model.dto.Drink;
 import com.drinksaver.repository.DrinksRepository;
 import org.springframework.stereotype.Repository;
@@ -18,9 +19,9 @@ public class HardcodedDrinksRepository implements DrinksRepository {
     }
 
     @Override
-    public Drink saveDrink(Drink drink) {
+    public SavedDrink saveDrink(Drink drink) {
         DRINKS.add(drink);
-        return drink;
+        return SavedDrink.of(drink);
     }
 }
 

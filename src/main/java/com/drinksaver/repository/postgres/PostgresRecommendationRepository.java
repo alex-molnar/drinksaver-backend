@@ -15,9 +15,7 @@ public class PostgresRecommendationRepository implements RecommendationRepositor
     private final RecommendationsTable recommendationsTable;
 
     @Autowired
-    PostgresRecommendationRepository(
-            RecommendationsTable recommendationsTable
-    ) {
+    PostgresRecommendationRepository(RecommendationsTable recommendationsTable) {
         this.recommendationsTable = recommendationsTable;
     }
 
