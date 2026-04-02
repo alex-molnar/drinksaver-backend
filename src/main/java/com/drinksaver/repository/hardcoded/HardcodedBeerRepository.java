@@ -1,7 +1,9 @@
 package com.drinksaver.repository.hardcoded;
 
+import com.drinksaver.model.db.Brand;
+import com.drinksaver.model.db.ConsumptionType;
+import com.drinksaver.model.db.SavedBeer;
 import com.drinksaver.model.dto.Beer;
-import com.drinksaver.model.dto.SingleNameResponse;
 import com.drinksaver.repository.BeerRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,8 +17,9 @@ import java.util.stream.Stream;
 public class HardcodedBeerRepository implements BeerRepository {
 
     private static final Map<Integer, String> BEER_BRANDS = new LinkedHashMap<>();
-    private static final List<Beer> BEERS = new ArrayList<>();
+    private static final List<SavedBeer> BEERS = new ArrayList<>();
     private static int nextBrandId = 1;
+    private static int nextBeerId = 1;
 
     static {
         BEER_BRANDS.put(nextBrandId++, "Heineken");
@@ -47,41 +50,42 @@ public class HardcodedBeerRepository implements BeerRepository {
     }
 
     @Override
-    public List<SingleNameResponse> getBrands(Integer maxAmount) {
+    public List<Brand> getBrands(Integer maxAmount) {
         return BEER_BRANDS.entrySet().stream()
-                .map(entry -> new SingleNameResponse(entry.getKey(), entry.getValue()))
+                .map(entry -> new Brand(entry.getKey(), entry.getValue()))
                 .limit(maxAmount)
                 .toList();
     }
 
     @Override
-    public List<SingleNameResponse> getConsumptionTypes(Integer maxAmount) {
+    public List<ConsumptionType> getConsumptionTypes(Integer maxAmount) {
         return Stream.of(
-                new SingleNameResponse(1, "Bottle"),
-                new SingleNameResponse(2, "Can"),
-                new SingleNameResponse(3, "Draft/Tap"),
-                new SingleNameResponse(4, "Pint"),
-                new SingleNameResponse(5, "Half Pint"),
-                new SingleNameResponse(6, "Small Glass (250ml)"),
-                new SingleNameResponse(7, "Large Glass (500ml)"),
-                new SingleNameResponse(8, "Pitcher"),
-                new SingleNameResponse(9, "Growler"),
-                new SingleNameResponse(10, "Keg"))
+                new ConsumptionType(1, "Bottle"),
+                new ConsumptionType(2, "Can"),
+                new ConsumptionType(3, "Draft/Tap"),
+                new ConsumptionType(4, "Pint"),
+                new ConsumptionType(5, "Half Pint"),
+                new ConsumptionType(6, "Small Glass (250ml)"),
+                new ConsumptionType(7, "Large Glass (500ml)"),
+                new ConsumptionType(8, "Pitcher"),
+                new ConsumptionType(9, "Growler"),
+                new ConsumptionType(10, "Keg"))
         .limit(maxAmount)
         .toList();
     }
 
     @Override
-    public SingleNameResponse saveBrand(String name) {
+    public Brand saveBrand(String name) {
         int newId = nextBrandId++;
         BEER_BRANDS.put(newId, name);
-        return new SingleNameResponse(newId, name);
+        return new Brand(newId, name);
     }
 
     @Override
-    public Beer saveBeer(Beer beer) {
-        BEERS.add(beer);
-        return beer;
+    public SavedBeer saveBeer(Beer beer) {
+        SavedBeer savedBeer = SavedBeer.of(beer).withId(nextBeerId++);
+        BEERS.add(savedBeer);
+        return savedBeer;
     }
 }
 

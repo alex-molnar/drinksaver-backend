@@ -1,9 +1,9 @@
 package com.drinksaver.controller;
 
-import com.drinksaver.model.dto.SingleNameResponse;
+import com.drinksaver.model.db.Brand;
+import com.drinksaver.model.db.ConsumptionType;
 import com.drinksaver.repository.BeerRepository;
 import com.drinksaver.service.InjectorService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +21,17 @@ public class BeerController {
     }
 
     @GetMapping("/brands")
-    public List<SingleNameResponse> getBrandsList(@RequestParam(defaultValue = "10") Integer amount) {
+    public List<Brand> getBrandsList(@RequestParam(defaultValue = "10") Integer amount) {
         return beerRepository.getBrands(amount);
     }
 
     @GetMapping("/consumption-types")
-    public List<SingleNameResponse> getConsumptionTypesList(@RequestParam(defaultValue = "10") Integer amount) {
+    public List<ConsumptionType> getConsumptionTypesList(@RequestParam(defaultValue = "10") Integer amount) {
         return beerRepository.getConsumptionTypes(amount);
     }
 
     @PostMapping("/brands/{brand}")
-    public SingleNameResponse saveBrand(@PathVariable String brand) {
+    public Brand saveBrand(@PathVariable String brand) {
         return beerRepository.saveBrand(brand);
     }
 }

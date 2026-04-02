@@ -1,15 +1,17 @@
 package com.drinksaver.repository;
 
+import com.drinksaver.model.db.Brand;
+import com.drinksaver.model.db.ConsumptionType;
+import com.drinksaver.model.db.SavedBeer;
 import com.drinksaver.model.dto.Beer;
-import com.drinksaver.model.dto.SingleNameResponse;
 
 import java.util.List;
 
 public interface BeerRepository {
     boolean is(String repositoryType);
-    List<SingleNameResponse> getBrands(Integer maxAmount);
-    List<SingleNameResponse> getConsumptionTypes(Integer maxAmount);
-    SingleNameResponse saveBrand(String name);
-    Beer saveBeer(Beer beer);
+    List<Brand> getBrands(Integer maxAmount);
+    List<ConsumptionType> getConsumptionTypes(Integer maxAmount);
+    Brand saveBrand(String name);
+    SavedBeer saveBeer(Beer beer);
 }
 

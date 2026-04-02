@@ -1,5 +1,6 @@
 package com.drinksaver.controller;
 
+import com.drinksaver.model.db.SavedBeer;
 import com.drinksaver.model.db.SavedDrink;
 import com.drinksaver.model.dto.Beer;
 import com.drinksaver.model.dto.Drink;
@@ -33,7 +34,7 @@ public class DrinksController {
     }
 
     @PostMapping("/beer/new")
-    public Beer saveBeer(@RequestBody Beer beer) {
+    public SavedBeer saveBeer(@RequestBody Beer beer) {
         // TODO in transaction
         drinksRepository.saveDrink(beer.asDrink());
         return beerRepository.saveBeer(beer);

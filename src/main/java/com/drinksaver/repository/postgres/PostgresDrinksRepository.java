@@ -23,7 +23,6 @@ public class PostgresDrinksRepository implements DrinksRepository {
 
     @Override
     public SavedDrink saveDrink(Drink drink) {
-        SavedDrink savedDrink =savedDrinksTable.save(SavedDrink.of(drink));
         return savedDrinksTable.save(SavedDrink.of(drink));
     }
 }

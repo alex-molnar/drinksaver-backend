@@ -1,0 +1,58 @@
+package com.drinksaver.repository.postgres;
+
+import com.drinksaver.model.db.Brand;
+import com.drinksaver.model.db.ConsumptionType;
+import com.drinksaver.model.db.SavedBeer;
+import com.drinksaver.model.dto.Beer;
+import com.drinksaver.repository.BeerRepository;
+import com.drinksaver.repository.postgres.schema.BrandsTable;
+import com.drinksaver.repository.postgres.schema.ConsumptionTypesTable;
+import com.drinksaver.repository.postgres.schema.SavedBeersTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class PostgresBeerRepository implements BeerRepository {
+    private final BrandsTable brandsTable;
+    private final ConsumptionTypesTable consumptionTypesTable;
+    private final SavedBeersTable savedBeersTable;
+
+    @Autowired
+    public PostgresBeerRepository(
+            BrandsTable brandsTable,
+            ConsumptionTypesTable consumptionTypesTable,
+            SavedBeersTable savedBeersTable
+    ) {
+        this.brandsTable = brandsTable;
+        this.consumptionTypesTable = consumptionTypesTable;
+        this.savedBeersTable = savedBeersTable;
+    }
+
+    @Override
+    public boolean is(String repositoryType) {
+        return repositoryType.equals("postgres");
+    }
+
+    @Override
+    public List<Brand> getBrands(Integer maxAmount) {
+        return brandsTable.findAll(Pageable.ofSize(maxAmount)).toList();
+    }
+
+    @Override
+    public List<ConsumptionType> getConsumptionTypes(Integer maxAmount) {
+        return consumptionTypesTable.findAll(Pageable.ofSize(maxAmount)).toList();
+    }
+
+    @Override
+    public Brand saveBrand(String name) {
+        return brandsTable.save(new Brand(name));
+    }
+
+    @Override
+    public SavedBeer saveBeer(Beer beer) {
+        return savedBeersTable.save(SavedBeer.of(beer));
+    }
+}
