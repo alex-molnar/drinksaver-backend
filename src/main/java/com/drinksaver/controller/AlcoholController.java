@@ -1,8 +1,9 @@
 package com.drinksaver.controller;
 
-import com.drinksaver.model.dto.AlcoholVolumeDescription;
+import com.drinksaver.model.db.AlcoholType;
+import com.drinksaver.model.db.AlcoholVolume;
 import com.drinksaver.model.dto.NewAlcoholEntry;
-import com.drinksaver.model.dto.SingleNameResponse;
+import com.drinksaver.model.dto.NewVolumeEntry;
 import com.drinksaver.repository.AlcoholRepository;
 import com.drinksaver.service.InjectorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,40 +21,36 @@ import java.util.List;
 @RequestMapping("/v1/alcohol")
 public class AlcoholController {
 
-    private final AlcoholRepository alcoholRepositoriy;
+    private final AlcoholRepository alcoholRepository;
 
     @Autowired
     public AlcoholController(InjectorService injectorService) {
-        this.alcoholRepositoriy = injectorService.getAlcoholRepository("hardcoded");
+        this.alcoholRepository = injectorService.getAlcoholRepository("hardcoded");
     }
 
     @GetMapping("/types")
-    public List<SingleNameResponse> getAlcoholTypes(@RequestParam(defaultValue = "10") Integer amount) {
-        return alcoholRepositoriy.getAlcoholTypes(amount);
+    public List<AlcoholType> getAlcoholTypes(@RequestParam(defaultValue = "10") Integer amount) {
+        return alcoholRepository.getAlcoholTypes(amount);
     }
 
     @GetMapping("/types/{alcoholTypeId}/volumes")
-    public List<AlcoholVolumeDescription> getVolumesByAlcoholType(@PathVariable Integer alcoholTypeId) {
-        return alcoholRepositoriy.getVolumesByAlcoholType(alcoholTypeId);
+    public List<AlcoholVolume> getVolumesByAlcoholType(@PathVariable Integer alcoholTypeId) {
+        return alcoholRepository.getVolumesByAlcoholType(alcoholTypeId);
     }
 
     @PostMapping("/types/{alcoholTypeId}/volumes")
-    public AlcoholVolumeDescription saveVolumeForAlcoholType(
+    public AlcoholVolume saveVolumeForAlcoholType(
             @PathVariable Integer alcoholTypeId,
-            @RequestBody AlcoholVolumeDescription volumeDescription) {
-        return alcoholRepositoriy.saveVolumeForAlcoholType(
+            @RequestBody NewVolumeEntry volumeDescription) {
+        return alcoholRepository.saveVolumeForAlcoholType(
                 alcoholTypeId,
-                volumeDescription.name(),
-                volumeDescription.volume()
+                volumeDescription
         );
     }
 
     @PostMapping("/types")
-    public SingleNameResponse createAlcoholType(@RequestBody NewAlcoholEntry newAlcoholEntry) {
-        return alcoholRepositoriy.createAlcoholType(
-                newAlcoholEntry.name(),
-                newAlcoholEntry.VolumeIds()
-        );
+    public AlcoholType createAlcoholType(@RequestBody NewAlcoholEntry newAlcoholEntry) {
+        return alcoholRepository.createAlcoholType(newAlcoholEntry);
     }
 
 }

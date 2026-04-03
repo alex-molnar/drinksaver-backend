@@ -1,7 +1,9 @@
 package com.drinksaver.repository.hardcoded;
 
-import com.drinksaver.model.dto.AlcoholVolumeDescription;
-import com.drinksaver.model.dto.SingleNameResponse;
+import com.drinksaver.model.db.AlcoholType;
+import com.drinksaver.model.db.AlcoholVolume;
+import com.drinksaver.model.dto.NewAlcoholEntry;
+import com.drinksaver.model.dto.NewVolumeEntry;
 import com.drinksaver.repository.AlcoholRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +15,7 @@ import java.util.Map;
 @Repository
 public class HardcodedAlcoholRepository implements AlcoholRepository {
 
-    private static final Map<Integer, AlcoholVolumeDescription> ALCOHOL_VOLUMES = new LinkedHashMap<>();
+    private static final Map<Integer, AlcoholVolume> ALCOHOL_VOLUMES = new LinkedHashMap<>();
     private static final Map<Integer, AlcoholType> ALCOHOL_TYPES = new LinkedHashMap<>();
     private static int nextVolumeId = 1;
 
@@ -81,7 +83,7 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
 
     private static int addVolume(String name, float volume) {
         int id = nextVolumeId++;
-        ALCOHOL_VOLUMES.put(id, new AlcoholVolumeDescription(name, volume));
+        ALCOHOL_VOLUMES.put(id, new AlcoholVolume(name, volume));
         return id;
     }
 
@@ -91,28 +93,27 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
     }
 
     @Override
-    public List<SingleNameResponse> getAlcoholTypes(Integer maxAmount) {
+    public List<AlcoholType> getAlcoholTypes(Integer maxAmount) {
         return ALCOHOL_TYPES.values().stream()
-                .map(alcoholType -> new SingleNameResponse(alcoholType.id, alcoholType.name))
                 .limit(maxAmount)
                 .toList();
     }
 
     @Override
-    public List<AlcoholVolumeDescription> getVolumesByAlcoholType(Integer alcoholTypeId) {
+    public List<AlcoholVolume> getVolumesByAlcoholType(Integer alcoholTypeId) {
         AlcoholType alcoholType = ALCOHOL_TYPES.get(alcoholTypeId);
         if (alcoholType == null) {
             return List.of();
         }
 
-        return alcoholType.volumeIds.stream()
+        return alcoholType.getVolumeIds().stream()
                 .map(ALCOHOL_VOLUMES::get)
                 .filter(java.util.Objects::nonNull)
                 .toList();
     }
 
     @Override
-    public AlcoholVolumeDescription saveVolumeForAlcoholType(Integer alcoholTypeId, String name, Float volume) {
+    public AlcoholVolume saveVolumeForAlcoholType(Integer alcoholTypeId, NewVolumeEntry volumeDescription) {
         AlcoholType alcoholType = ALCOHOL_TYPES.get(alcoholTypeId);
         if (alcoholType == null) {
             throw new IllegalArgumentException("Alcohol type with id " + alcoholTypeId + " not found");
@@ -120,39 +121,29 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
 
         // Create new volume and add to ALCOHOL_VOLUMES map
         int newVolumeId = nextVolumeId++;
-        AlcoholVolumeDescription newVolume = new AlcoholVolumeDescription(name, volume);
+        AlcoholVolume newVolume = new AlcoholVolume(volumeDescription.name(), volumeDescription.volume());
         ALCOHOL_VOLUMES.put(newVolumeId, newVolume);
 
         // Add volume ID to alcohol type
-        alcoholType.volumeIds.add(newVolumeId);
+        alcoholType.getVolumeIds().add(newVolumeId);
 
         return newVolume;
     }
 
     @Override
-    public SingleNameResponse createAlcoholType(String name, List<Integer> volumeIds) {
+    public AlcoholType createAlcoholType(NewAlcoholEntry newAlcoholEntry) {
         // Generate new ID
         int newId = ALCOHOL_TYPES.keySet().stream()
                 .max(Integer::compareTo)
                 .orElse(0) + 1;
 
         // Create volume IDs list - empty if volumeIds is null or empty
-        List<Integer> volumeIdsList = new ArrayList<>();
-        if (volumeIds != null && !volumeIds.isEmpty()) {
-            // Validate that all volume IDs exist in ALCOHOL_VOLUMES
-            for (Integer volumeId : volumeIds) {
-                if (ALCOHOL_VOLUMES.containsKey(volumeId)) {
-                    volumeIdsList.add(volumeId);
-                }
-            }
-        }
+        List<Integer> volumeIdsList = newAlcoholEntry.volumes().stream().map(nve -> addVolume(nve.name(), nve.volume())).toList();
 
         // Create and store new alcohol type
-        AlcoholType newAlcoholType = new AlcoholType(newId, name, volumeIdsList);
+        AlcoholType newAlcoholType = new AlcoholType(newId, newAlcoholEntry.name(), volumeIdsList);
         ALCOHOL_TYPES.put(newId, newAlcoholType);
 
-        return new SingleNameResponse(newId, name);
+        return newAlcoholType;
     }
-
-    private record AlcoholType(int id, String name, List<Integer> volumeIds) {}
 }
