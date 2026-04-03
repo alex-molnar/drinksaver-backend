@@ -25,7 +25,7 @@ public class AlcoholController {
 
     @Autowired
     public AlcoholController(InjectorService injectorService) {
-        this.alcoholRepository = injectorService.getAlcoholRepository("hardcoded");
+        this.alcoholRepository = injectorService.getAlcoholRepository();
     }
 
     @GetMapping("/types")

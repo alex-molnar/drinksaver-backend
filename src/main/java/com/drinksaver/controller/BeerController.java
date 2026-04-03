@@ -17,7 +17,7 @@ public class BeerController {
 
     @Autowired
     public BeerController(InjectorService injectorService) {
-        this.beerRepository = injectorService.getBeerRepository("hardcoded");
+        this.beerRepository = injectorService.getBeerRepository();
     }
 
     @GetMapping("/brands")

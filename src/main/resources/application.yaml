@@ -1,0 +1,6 @@
+
+repository:
+  alcohol: "${ALCOHOL_REPOSITORY:hardcoded}"
+  beer: "${BEER_REPOSITORY:hardcoded}"
+  drink: "${DRINK_REPOSITORY:hardcoded}"
+  recommendation: "${RECOMMENDATION_REPOSITORY:hardcoded}"

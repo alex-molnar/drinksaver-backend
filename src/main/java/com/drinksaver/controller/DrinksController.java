@@ -24,8 +24,8 @@ public class DrinksController {
 
     @Autowired
     public DrinksController(InjectorService injectorService) {
-        this.drinksRepository = injectorService.getDrinksRepository("hardcoded");
-        this.beerRepository = injectorService.getBeerRepository("hardcoded");
+        this.drinksRepository = injectorService.getDrinksRepository();
+        this.beerRepository = injectorService.getBeerRepository();
     }
 
     @PostMapping("/new")

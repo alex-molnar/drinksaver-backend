@@ -19,7 +19,7 @@ public class RecommendationsController {
 
     @Autowired
     public RecommendationsController(InjectorService injectorService) {
-        this.recommendationRepository = injectorService.getRecommendationsRepository("hardcoded");
+        this.recommendationRepository = injectorService.getRecommendationsRepository();
     }
 
     @GetMapping("/list")
