@@ -75,6 +75,16 @@ spec:
               value: {{ .Values.datasource.password | quote }}
             - name: "POSTGRES_USERNAME"
               value: {{ .Values.datasource.username | quote }}
+            - name: "CORS_ALLOWED_ORIGINS"
+              value: {{ .Values.cors.allowedOrigins | quote }}
+            - name: "CORS_ALLOWED_METHODS"
+              value: {{ .Values.cors.allowedMethods | quote }}
+            - name: "CORS_ALLOWED_HEADERS"
+              value: {{ .Values.cors.allowedHeaders | quote }}
+            - name: "CORS_ALLOW_CREDENTIALS"
+              value: {{ .Values.cors.allowCredentials | quote }}
+            - name: "CORS_MAX_AGE"
+              value: {{ .Values.cors.maxAge | quote }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

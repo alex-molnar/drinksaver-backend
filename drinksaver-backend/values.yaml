@@ -20,6 +20,16 @@ repository:
   drink: "postgres"
   recommendation: "postgres"
 
+# CORS configuration for frontend access
+cors:
+  # Comma-separated list of allowed origins (e.g., "https://frontend.example.com,https://app.example.com")
+  # Use "*" to allow all origins (not recommended for production with credentials)
+  allowedOrigins: "*"
+  allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
+  allowedHeaders: "*"
+  allowCredentials: "false"
+  maxAge: "3600"
+
 datasource:
   url: ""
   password: ""
