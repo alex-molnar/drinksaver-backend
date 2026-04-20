@@ -33,3 +33,6 @@ drinksaver-backend/install-cmd
 # IDEA files
 .idea/*
 drinksaver-backend.iml
+
+# Secrets
+secret.yaml

@@ -72,9 +72,15 @@ spec:
             - name: "POSTGRES_DATASOURCE_URL"
               value: {{ .Values.datasource.url | quote }}
             - name: "POSTGRES_PASSWORD"
-              value: {{ .Values.datasource.password | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.datasource.passwordSecretName | quote }}
+                  key: password
             - name: "POSTGRES_USERNAME"
-              value: {{ .Values.datasource.username | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.datasource.passwordSecretName | quote }}
+                  key: username
             - name: "CORS_ALLOWED_ORIGINS"
               value: {{ .Values.cors.allowedOrigins | quote }}
             - name: "CORS_ALLOWED_METHODS"
