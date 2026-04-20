@@ -4,5 +4,9 @@ import com.drinksaver.model.db.Recommendation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface RecommendationsTable extends JpaRepository<Recommendation, Integer> {}
+public interface RecommendationsTable extends JpaRepository<Recommendation, Integer> {
+    List<Recommendation> getRecommendationsByUserId(Integer userId);
+}

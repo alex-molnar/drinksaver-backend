@@ -1,10 +1,15 @@
 package com.drinksaver.model.db;
 
-import com.drinksaver.model.dto.SingleNameResponse;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "recommendations")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Recommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +19,6 @@ public class Recommendation {
     private String name;
     private Integer alcoholTypeId;
     private Integer alcoholVolumeId;
-
-    public SingleNameResponse asSingleNameResponse() {
-        return new SingleNameResponse(id, name);
-    }
+    private Integer brandId;
+    private Integer consumptionTypeId;
 }
