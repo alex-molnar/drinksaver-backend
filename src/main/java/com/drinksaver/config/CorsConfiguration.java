@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfiguration {
 
     @Value("${cors.allowed-origins:*}")
-    private String[] allowedOrigins;
+    private String allowedOrigins;
 
     @Value("${cors.allowed-methods:GET,POST,PUT,DELETE,OPTIONS}")
     private String[] allowedMethods;
@@ -29,8 +29,9 @@ public class CorsConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                String[] origins = allowedOrigins.split(",");
                 registry.addMapping("/**")
-                        .allowedOrigins(allowedOrigins)
+                        .allowedOrigins(origins)
                         .allowedMethods(allowedMethods)
                         .allowedHeaders(allowedHeaders)
                         .allowCredentials(allowCredentials)
@@ -39,4 +40,3 @@ public class CorsConfiguration {
         };
     }
 }
-

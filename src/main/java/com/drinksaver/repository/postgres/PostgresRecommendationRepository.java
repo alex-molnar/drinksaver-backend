@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class PostgresRecommendationRepository implements RecommendationRepository {
@@ -23,7 +24,7 @@ public class PostgresRecommendationRepository implements RecommendationRepositor
     }
 
     @Override
-    public List<Recommendation> getRecommendations(Integer userId) {
+    public List<Recommendation> getRecommendations(UUID userId) {
         return recommendationsTable.getRecommendationsByUserId(userId);
     }
 }

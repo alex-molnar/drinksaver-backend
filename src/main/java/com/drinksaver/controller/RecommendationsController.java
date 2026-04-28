@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/recommendations")
@@ -20,7 +21,7 @@ public class RecommendationsController {
     }
 
     @GetMapping("/{userId}/list")
-    public List<Recommendation> getRecommendationsList(@PathVariable Integer userId) {
+    public List<Recommendation> getRecommendationsList(@PathVariable UUID userId) {
         return recommendationRepository.getRecommendations(userId);
     }
 }

@@ -24,7 +24,7 @@ repository:
 cors:
   # Comma-separated list of allowed origins (e.g., "https://frontend.example.com,https://app.example.com")
   # Use "*" to allow all origins (not recommended for production with credentials)
-  allowedOrigins: "*"
+  allowedOrigins: "http://app.drinksaver.kak.im"
   allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
   allowedHeaders: "*"
   allowCredentials: "false"

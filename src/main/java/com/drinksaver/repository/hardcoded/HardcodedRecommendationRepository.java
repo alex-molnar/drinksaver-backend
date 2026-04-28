@@ -5,6 +5,7 @@ import com.drinksaver.repository.RecommendationRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class HardcodedRecommendationRepository implements RecommendationRepository {
@@ -14,7 +15,7 @@ public class HardcodedRecommendationRepository implements RecommendationReposito
     }
 
     @Override
-    public List<Recommendation> getRecommendations(Integer userId) {
+    public List<Recommendation> getRecommendations(UUID userId) {
         return List.of(
                 new Recommendation() {{
                     setId(1);

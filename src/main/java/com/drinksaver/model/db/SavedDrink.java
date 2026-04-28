@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "saved_drinks")
 @NoArgsConstructor
@@ -17,13 +19,13 @@ public class SavedDrink {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer userId;
+    private UUID userId;
     private String date;
     private Integer alcoholTypeId;
     private Integer alcoholVolumeId;
     private String comments;
 
-    public SavedDrink(Integer userID, String date, Integer alcoholTypeId, Integer alcoholVolumeId, String comments) {
+    public SavedDrink(UUID userID, String date, Integer alcoholTypeId, Integer alcoholVolumeId, String comments) {
         this.userId = userID;
         this.date = date;
         this.alcoholTypeId = alcoholTypeId;
