@@ -17,5 +17,5 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://auth.drinksaver.kak.im/auth/realms/drinksaver
-          jwk-set-uri: http://auth.drinksaver.kak.im/auth/realms/drinksaver/protocol/openid-connect/certs
+          issuer-uri: "${JWT_ISSUER_URI:https://auth.drinksaver.kak.im/auth/realms/drinksaver}"
+          jwk-set-uri: "${JWT_JWK_SET_URI:https://auth.drinksaver.kak.im/auth/realms/drinksaver/protocol/openid-connect/certs}"

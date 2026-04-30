@@ -24,11 +24,15 @@ repository:
 cors:
   # Comma-separated list of allowed origins (e.g., "https://frontend.example.com,https://app.example.com")
   # Use "*" to allow all origins (not recommended for production with credentials)
-  allowedOrigins: "http://app.drinksaver.kak.im"
+  allowedOrigins: "https://app.drinksaver.kak.im"
   allowedMethods: "GET,POST,PUT,DELETE,OPTIONS"
   allowedHeaders: "*"
-  allowCredentials: "false"
+  allowCredentials: "true"
   maxAge: "3600"
+
+jwt:
+  issuerUri: "https://auth.drinksaver.kak.im/auth/realms/drinksaver"
+  jwkSetUri: "https://auth.drinksaver.kak.im/auth/realms/drinksaver/protocol/openid-connect/certs"
 
 datasource:
   url: ""
@@ -81,7 +85,8 @@ service:
 ingress:
   enabled: true
   className: "traefik"
-  annotations: {}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -89,10 +94,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+    - secretName: drinksaver-backend-tls
+      hosts:
+        - api.drinksaver.kak.im
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

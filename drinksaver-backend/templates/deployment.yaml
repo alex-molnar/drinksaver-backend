@@ -91,6 +91,10 @@ spec:
               value: {{ .Values.cors.allowCredentials | quote }}
             - name: "CORS_MAX_AGE"
               value: {{ .Values.cors.maxAge | quote }}
+            - name: "JWT_ISSUER_URI"
+              value: {{ .Values.jwt.issuerUri | quote }}
+            - name: "JWT_JWK_SET_URI"
+              value: {{ .Values.jwt.jwkSetUri | quote }}
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
