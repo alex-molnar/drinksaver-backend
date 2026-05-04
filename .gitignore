@@ -36,3 +36,7 @@ drinksaver-backend.iml
 
 # Secrets
 secret.yaml
+test_secret.yaml
+
+# test values
+test_values.yaml

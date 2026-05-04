@@ -1,4 +1,3 @@
-
 repository:
   alcohol: "${ALCOHOL_REPOSITORY:hardcoded}"
   beer: "${BEER_REPOSITORY:hardcoded}"
@@ -19,3 +18,9 @@ spring:
         jwt:
           issuer-uri: "${JWT_ISSUER_URI:https://auth.drinksaver.kak.im/auth/realms/drinksaver}"
           jwk-set-uri: "${JWT_JWK_SET_URI:https://auth.drinksaver.kak.im/auth/realms/drinksaver/protocol/openid-connect/certs}"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
