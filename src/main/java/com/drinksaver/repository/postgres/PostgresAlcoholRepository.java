@@ -1,10 +1,13 @@
 package com.drinksaver.repository.postgres;
 
+import com.drinksaver.model.db.AlcoholSubtype;
 import com.drinksaver.model.db.AlcoholType;
 import com.drinksaver.model.db.AlcoholVolume;
 import com.drinksaver.model.dto.NewAlcoholEntry;
+import com.drinksaver.model.dto.NewAlcoholSubtype;
 import com.drinksaver.model.dto.NewVolumeEntry;
 import com.drinksaver.repository.AlcoholRepository;
+import com.drinksaver.repository.postgres.schema.AlcoholSubtypesTable;
 import com.drinksaver.repository.postgres.schema.AlcoholTypesTable;
 import com.drinksaver.repository.postgres.schema.AlcoholVolumeTable;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +22,12 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
     private final static UUID SHARED_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     private final AlcoholTypesTable alcoholTypesTable;
+    private final AlcoholSubtypesTable alcoholSubtypesTable;
     private final AlcoholVolumeTable alcoholVolumeTable;
 
-    public PostgresAlcoholRepository(AlcoholTypesTable alcoholTypesTable, AlcoholVolumeTable alcoholVolumeTable) {
+    public PostgresAlcoholRepository(AlcoholTypesTable alcoholTypesTable, AlcoholSubtypesTable alcoholSubtypesTable, AlcoholVolumeTable alcoholVolumeTable) {
         this.alcoholTypesTable = alcoholTypesTable;
+        this.alcoholSubtypesTable = alcoholSubtypesTable;
         this.alcoholVolumeTable = alcoholVolumeTable;
     }
 
@@ -37,6 +42,19 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
             alcoholTypesTable.findAllByUserId(userId).stream(),
             alcoholTypesTable.findAllByUserId(SHARED_USER_ID).stream()
         ).toList();
+    }
+
+    @Override
+    public List<AlcoholSubtype> getSubtypesByAlcoholType(Integer alcoholTypeId, UUID userId) {
+        return Stream.concat(
+            alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserId(alcoholTypeId, userId).stream(),
+            alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserId(alcoholTypeId, SHARED_USER_ID).stream()
+        ).toList();
+    }
+
+    @Override
+    public AlcoholSubtype saveSubtypeForAlcoholType(Integer alcoholTypeId, NewAlcoholSubtype newAlcoholSubtype) {
+        return alcoholSubtypesTable.save(new AlcoholSubtype(alcoholTypeId, newAlcoholSubtype.userId(), newAlcoholSubtype.name()));
     }
 
     @Override
@@ -66,6 +84,13 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
                 .stream()
                 .map(newEntry -> alcoholVolumeTable.save(AlcoholVolume.of(newEntry)).getId())
                 .toList();
-        return alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIds));
+        AlcoholType result = alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIds));
+        alcoholSubtypesTable.saveAll(
+            newAlcoholEntry.alcoholSubtypes()
+                .stream()
+                .map(subtype -> new AlcoholSubtype(result.getId(), newAlcoholEntry.userId(), subtype))
+                .toList()
+        );
+        return result;
     }
 }

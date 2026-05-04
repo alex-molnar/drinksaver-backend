@@ -1,8 +1,10 @@
 package com.drinksaver.controller;
 
+import com.drinksaver.model.db.AlcoholSubtype;
 import com.drinksaver.model.db.AlcoholType;
 import com.drinksaver.model.db.AlcoholVolume;
 import com.drinksaver.model.dto.NewAlcoholEntry;
+import com.drinksaver.model.dto.NewAlcoholSubtype;
 import com.drinksaver.model.dto.NewVolumeEntry;
 import com.drinksaver.repository.AlcoholRepository;
 import com.drinksaver.service.InjectorService;
@@ -32,6 +34,16 @@ public class AlcoholController {
     @GetMapping("/types")
     public List<AlcoholType> getAlcoholTypes(@RequestParam(defaultValue = "10") UUID userId) {
         return alcoholRepository.getAlcoholTypes(userId);
+    }
+
+    @GetMapping("/types/{alcoholTypeId}/subtypes")
+    public List<AlcoholSubtype> getSubtypesByAlcoholType(@PathVariable Integer alcoholTypeId, @RequestParam UUID userId) {
+        return alcoholRepository.getSubtypesByAlcoholType(alcoholTypeId, userId);
+    }
+
+    @PostMapping("/types/{alcoholTypeId}/subtypes")
+    public AlcoholSubtype getSubtypesByAlcoholType(@PathVariable Integer alcoholTypeId, @RequestBody NewAlcoholSubtype newAlcoholSubtype) {
+        return alcoholRepository.saveSubtypeForAlcoholType(alcoholTypeId, newAlcoholSubtype);
     }
 
     @GetMapping("/types/{alcoholTypeId}/volumes")

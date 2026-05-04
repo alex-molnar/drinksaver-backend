@@ -22,13 +22,15 @@ public class SavedDrink {
     private UUID userId;
     private String date;
     private Integer alcoholTypeId;
+    private Integer alcoholSubtypeId;
     private Integer alcoholVolumeId;
     private String comments;
 
-    public SavedDrink(UUID userID, String date, Integer alcoholTypeId, Integer alcoholVolumeId, String comments) {
+    public SavedDrink(UUID userID, String date, Integer alcoholTypeId, Integer alcoholSubtypeId, Integer alcoholVolumeId, String comments) {
         this.userId = userID;
         this.date = date;
         this.alcoholTypeId = alcoholTypeId;
+        this.alcoholSubtypeId = alcoholSubtypeId;
         this.alcoholVolumeId = alcoholVolumeId;
         this.comments = comments;
     }
@@ -38,6 +40,7 @@ public class SavedDrink {
                 drink.userId(),
                 drink.date(),
                 drink.alcoholTypeId(),
+                drink.alcoholSubtypeId(),
                 drink.alcoholVolumeId(),
                 drink.comments()
         );
