@@ -13,9 +13,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Repository
 public class PostgresBeerRepository implements BeerRepository {
+    private final static UUID SHARED_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
     private final BrandsTable brandsTable;
     private final ConsumptionTypesTable consumptionTypesTable;
     private final SavedBeersTable savedBeersTable;
@@ -37,8 +41,11 @@ public class PostgresBeerRepository implements BeerRepository {
     }
 
     @Override
-    public List<Brand> getBrands(Integer maxAmount) {
-        return brandsTable.findAll(Pageable.ofSize(maxAmount)).toList();
+    public List<Brand> getBrands(UUID userId) {
+        return Stream.concat(
+            brandsTable.findAllByUserId(userId).stream(),
+            brandsTable.findAllByUserId(SHARED_USER_ID).stream()
+        ).toList();
     }
 
     @Override
@@ -47,7 +54,7 @@ public class PostgresBeerRepository implements BeerRepository {
     }
 
     @Override
-    public Brand saveBrand(String name) {
+    public Brand saveBrand(UUID userId, String name) {
         return brandsTable.save(new Brand(name));
     }
 

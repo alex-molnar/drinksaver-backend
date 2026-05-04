@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "alcohol_types")
@@ -20,10 +21,12 @@ public class AlcoholType {
     @Column(name = "id")
     private Integer id;
 
+    private UUID userId;
     private String name;
     private List<Integer> volumeIds;
 
-    public AlcoholType(String name, List<Integer> volumeIds) {
+    public AlcoholType(UUID userId, String name, List<Integer> volumeIds) {
+        this.userId = userId;
         this.name = name;
         this.volumeIds = volumeIds;
     }

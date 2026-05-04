@@ -6,10 +6,11 @@ import com.drinksaver.model.dto.NewAlcoholEntry;
 import com.drinksaver.model.dto.NewVolumeEntry;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface AlcoholRepository {
     boolean is(String repositoryType);
-    List<AlcoholType> getAlcoholTypes(Integer maxAmount);
+    List<AlcoholType> getAlcoholTypes(UUID userId);
     List<AlcoholVolume> getVolumesByAlcoholType(Integer alcoholTypeId);
     AlcoholVolume saveVolumeForAlcoholType(Integer alcoholTypeId, NewVolumeEntry volumeDescription);
     AlcoholType createAlcoholType(NewAlcoholEntry newAlcoholEntry);

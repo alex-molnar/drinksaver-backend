@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/beer")
@@ -21,8 +22,8 @@ public class BeerController {
     }
 
     @GetMapping("/brands")
-    public List<Brand> getBrandsList(@RequestParam(defaultValue = "10") Integer amount) {
-        return beerRepository.getBrands(amount);
+    public List<Brand> getBrandsList(@RequestParam(defaultValue = "10") UUID userId) {
+        return beerRepository.getBrands(userId);
     }
 
     @GetMapping("/consumption-types")
@@ -30,9 +31,9 @@ public class BeerController {
         return beerRepository.getConsumptionTypes(amount);
     }
 
-    @PostMapping("/brands/{brand}")
-    public Brand saveBrand(@PathVariable String brand) {
-        return beerRepository.saveBrand(brand);
+    @PostMapping("/{userId}/brands/{brand}")
+    public Brand saveBrand(@PathVariable UUID userId, @PathVariable String brand) {
+        return beerRepository.saveBrand(userId, brand);
     }
 }
 

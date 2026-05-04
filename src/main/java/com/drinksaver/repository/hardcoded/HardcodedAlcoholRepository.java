@@ -7,10 +7,7 @@ import com.drinksaver.model.dto.NewVolumeEntry;
 import com.drinksaver.repository.AlcoholRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class HardcodedAlcoholRepository implements AlcoholRepository {
@@ -55,30 +52,30 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
         int v32 = addVolume("large", 0.1f);
 
         // Initialize alcohol types with volume IDs
-        ALCOHOL_TYPES.put(1, new AlcoholType(1, "beer", new ArrayList<>(List.of(v1, v2, v3, v4))));
-        ALCOHOL_TYPES.put(2, new AlcoholType(2, "cider", new ArrayList<>(List.of(v1, v2, v3))));
-        ALCOHOL_TYPES.put(3, new AlcoholType(3, "spirit", new ArrayList<>(List.of(v5, v6, v7))));
-        ALCOHOL_TYPES.put(4, new AlcoholType(4, "champagne", new ArrayList<>(List.of(v4, v8, v9))));
-        ALCOHOL_TYPES.put(5, new AlcoholType(5, "red wine", new ArrayList<>(List.of(v4, v10, v11, v9))));
-        ALCOHOL_TYPES.put(7, new AlcoholType(7, "cognac", new ArrayList<>(List.of(v12, v13))));
-        ALCOHOL_TYPES.put(8, new AlcoholType(8, "mixed shot", new ArrayList<>(List.of(v14, v15, v16))));
-        ALCOHOL_TYPES.put(9, new AlcoholType(9, "chacha", new ArrayList<>(List.of(v17, v18))));
-        ALCOHOL_TYPES.put(10, new AlcoholType(10, "Piana Vyshnia", new ArrayList<>(List.of(v17, v18))));
-        ALCOHOL_TYPES.put(11, new AlcoholType(11, "limoncello", new ArrayList<>(List.of(v19, v15, v20))));
-        ALCOHOL_TYPES.put(12, new AlcoholType(12, "vodka", new ArrayList<>(List.of(v5, v7, v21))));
-        ALCOHOL_TYPES.put(13, new AlcoholType(13, "Zubrowka", new ArrayList<>(List.of(v5, v7, v21))));
-        ALCOHOL_TYPES.put(14, new AlcoholType(14, "prosecco", new ArrayList<>(List.of(v4, v8, v9))));
-        ALCOHOL_TYPES.put(15, new AlcoholType(15, "palinka", new ArrayList<>(List.of(v5, v7, v21))));
-        ALCOHOL_TYPES.put(16, new AlcoholType(16, "white wine", new ArrayList<>(List.of(v4, v10, v11, v9))));
-        ALCOHOL_TYPES.put(17, new AlcoholType(17, "aperitif", new ArrayList<>(List.of(v30, v31, v32))));
-        ALCOHOL_TYPES.put(18, new AlcoholType(18, "digestive", new ArrayList<>(List.of(v12, v13))));
-        ALCOHOL_TYPES.put(19, new AlcoholType(19, "whiskey", new ArrayList<>(List.of(v5, v6, v7))));
-        ALCOHOL_TYPES.put(20, new AlcoholType(20, "seltzer", new ArrayList<>(List.of(v22, v23, v24))));
-        ALCOHOL_TYPES.put(21, new AlcoholType(21, "ouzo", new ArrayList<>(List.of(v17, v18))));
-        ALCOHOL_TYPES.put(22, new AlcoholType(22, "Tubi", new ArrayList<>(List.of(v17, v18))));
-        ALCOHOL_TYPES.put(23, new AlcoholType(23, "froccs", new ArrayList<>(List.of(v25, v26, v27))));
-        ALCOHOL_TYPES.put(24, new AlcoholType(24, "Ukrainian Honey", new ArrayList<>(List.of(v17, v18))));
-        ALCOHOL_TYPES.put(25, new AlcoholType(25, "soju", new ArrayList<>(List.of(v17, v28, v29))));
+        ALCOHOL_TYPES.put(1, new AlcoholType(1, UUID.randomUUID(), "beer", new ArrayList<>(List.of(v1, v2, v3, v4))));
+        ALCOHOL_TYPES.put(2, new AlcoholType(2, UUID.randomUUID(), "cider", new ArrayList<>(List.of(v1, v2, v3))));
+        ALCOHOL_TYPES.put(3, new AlcoholType(3, UUID.randomUUID(), "spirit", new ArrayList<>(List.of(v5, v6, v7))));
+        ALCOHOL_TYPES.put(4, new AlcoholType(4, UUID.randomUUID(), "champagne", new ArrayList<>(List.of(v4, v8, v9))));
+        ALCOHOL_TYPES.put(5, new AlcoholType(5, UUID.randomUUID(), "red wine", new ArrayList<>(List.of(v4, v10, v11, v9))));
+        ALCOHOL_TYPES.put(7, new AlcoholType(7, UUID.randomUUID(), "cognac", new ArrayList<>(List.of(v12, v13))));
+        ALCOHOL_TYPES.put(8, new AlcoholType(8, UUID.randomUUID(), "mixed shot", new ArrayList<>(List.of(v14, v15, v16))));
+        ALCOHOL_TYPES.put(9, new AlcoholType(9, UUID.randomUUID(), "chacha", new ArrayList<>(List.of(v17, v18))));
+        ALCOHOL_TYPES.put(10, new AlcoholType(10, UUID.randomUUID(), "Piana Vyshnia", new ArrayList<>(List.of(v17, v18))));
+        ALCOHOL_TYPES.put(11, new AlcoholType(11, UUID.randomUUID(), "limoncello", new ArrayList<>(List.of(v19, v15, v20))));
+        ALCOHOL_TYPES.put(12, new AlcoholType(12, UUID.randomUUID(), "vodka", new ArrayList<>(List.of(v5, v7, v21))));
+        ALCOHOL_TYPES.put(13, new AlcoholType(13, UUID.randomUUID(), "Zubrowka", new ArrayList<>(List.of(v5, v7, v21))));
+        ALCOHOL_TYPES.put(14, new AlcoholType(14, UUID.randomUUID(), "prosecco", new ArrayList<>(List.of(v4, v8, v9))));
+        ALCOHOL_TYPES.put(15, new AlcoholType(15, UUID.randomUUID(), "palinka", new ArrayList<>(List.of(v5, v7, v21))));
+        ALCOHOL_TYPES.put(16, new AlcoholType(16, UUID.randomUUID(), "white wine", new ArrayList<>(List.of(v4, v10, v11, v9))));
+        ALCOHOL_TYPES.put(17, new AlcoholType(17, UUID.randomUUID(), "aperitif", new ArrayList<>(List.of(v30, v31, v32))));
+        ALCOHOL_TYPES.put(18, new AlcoholType(18, UUID.randomUUID(), "digestive", new ArrayList<>(List.of(v12, v13))));
+        ALCOHOL_TYPES.put(19, new AlcoholType(19, UUID.randomUUID(), "whiskey", new ArrayList<>(List.of(v5, v6, v7))));
+        ALCOHOL_TYPES.put(20, new AlcoholType(20, UUID.randomUUID(), "seltzer", new ArrayList<>(List.of(v22, v23, v24))));
+        ALCOHOL_TYPES.put(21, new AlcoholType(21, UUID.randomUUID(), "ouzo", new ArrayList<>(List.of(v17, v18))));
+        ALCOHOL_TYPES.put(22, new AlcoholType(22, UUID.randomUUID(), "Tubi", new ArrayList<>(List.of(v17, v18))));
+        ALCOHOL_TYPES.put(23, new AlcoholType(23, UUID.randomUUID(), "froccs", new ArrayList<>(List.of(v25, v26, v27))));
+        ALCOHOL_TYPES.put(24, new AlcoholType(24, UUID.randomUUID(), "Ukrainian Honey", new ArrayList<>(List.of(v17, v18))));
+        ALCOHOL_TYPES.put(25, new AlcoholType(25, UUID.randomUUID(), "soju", new ArrayList<>(List.of(v17, v28, v29))));
     }
 
     private static int addVolume(String name, float volume) {
@@ -93,9 +90,8 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
     }
 
     @Override
-    public List<AlcoholType> getAlcoholTypes(Integer maxAmount) {
+    public List<AlcoholType> getAlcoholTypes(UUID userId) {
         return ALCOHOL_TYPES.values().stream()
-                .limit(maxAmount)
                 .toList();
     }
 
@@ -141,7 +137,7 @@ public class HardcodedAlcoholRepository implements AlcoholRepository {
         List<Integer> volumeIdsList = newAlcoholEntry.volumes().stream().map(nve -> addVolume(nve.name(), nve.volume())).toList();
 
         // Create and store new alcohol type
-        AlcoholType newAlcoholType = new AlcoholType(newId, newAlcoholEntry.name(), volumeIdsList);
+        AlcoholType newAlcoholType = new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIdsList);
         ALCOHOL_TYPES.put(newId, newAlcoholType);
 
         return newAlcoholType;

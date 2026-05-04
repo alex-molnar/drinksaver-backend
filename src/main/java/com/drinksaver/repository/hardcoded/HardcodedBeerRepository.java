@@ -7,10 +7,7 @@ import com.drinksaver.model.dto.Beer;
 import com.drinksaver.repository.BeerRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Repository
@@ -50,10 +47,9 @@ public class HardcodedBeerRepository implements BeerRepository {
     }
 
     @Override
-    public List<Brand> getBrands(Integer maxAmount) {
+    public List<Brand> getBrands(UUID userId) {
         return BEER_BRANDS.entrySet().stream()
-                .map(entry -> new Brand(entry.getKey(), entry.getValue()))
-                .limit(maxAmount)
+                .map(entry -> new Brand(entry.getKey(), userId, entry.getValue()))
                 .toList();
     }
 
@@ -75,10 +71,10 @@ public class HardcodedBeerRepository implements BeerRepository {
     }
 
     @Override
-    public Brand saveBrand(String name) {
+    public Brand saveBrand(UUID userId, String name) {
         int newId = nextBrandId++;
         BEER_BRANDS.put(newId, name);
-        return new Brand(newId, name);
+        return new Brand(newId, userId, name);
     }
 
     @Override

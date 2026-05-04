@@ -11,9 +11,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 @Repository
 public class PostgresAlcoholRepository implements AlcoholRepository {
+    private final static UUID SHARED_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+
     private final AlcoholTypesTable alcoholTypesTable;
     private final AlcoholVolumeTable alcoholVolumeTable;
 
@@ -28,8 +32,11 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
     }
 
     @Override
-    public List<AlcoholType> getAlcoholTypes(Integer maxAmount) {
-        return alcoholTypesTable.findAll(Pageable.ofSize(maxAmount)).toList();
+    public List<AlcoholType> getAlcoholTypes(UUID userId) {
+        return Stream.concat(
+            alcoholTypesTable.findAllByUserId(userId).stream(),
+            alcoholTypesTable.findAllByUserId(SHARED_USER_ID).stream()
+        ).toList();
     }
 
     @Override
@@ -59,6 +66,6 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
                 .stream()
                 .map(newEntry -> alcoholVolumeTable.save(AlcoholVolume.of(newEntry)).getId())
                 .toList();
-        return alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.name(), volumeIds));
+        return alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIds));
     }
 }

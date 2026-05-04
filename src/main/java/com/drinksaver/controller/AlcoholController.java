@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/alcohol")
@@ -29,8 +30,8 @@ public class AlcoholController {
     }
 
     @GetMapping("/types")
-    public List<AlcoholType> getAlcoholTypes(@RequestParam(defaultValue = "10") Integer amount) {
-        return alcoholRepository.getAlcoholTypes(amount);
+    public List<AlcoholType> getAlcoholTypes(@RequestParam(defaultValue = "10") UUID userId) {
+        return alcoholRepository.getAlcoholTypes(userId);
     }
 
     @GetMapping("/types/{alcoholTypeId}/volumes")
