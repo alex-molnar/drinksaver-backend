@@ -22,7 +22,8 @@ public class Brand {
     private UUID userId;
     private String name;
 
-    public Brand(String name) {
+    public Brand(UUID userId, String name) {
+        this.userId = userId;
         this.name = name;
     }
 }

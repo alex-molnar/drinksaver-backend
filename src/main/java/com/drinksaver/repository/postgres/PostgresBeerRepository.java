@@ -55,7 +55,7 @@ public class PostgresBeerRepository implements BeerRepository {
 
     @Override
     public Brand saveBrand(UUID userId, String name) {
-        return brandsTable.save(new Brand(name));
+        return brandsTable.save(new Brand(userId, name));
     }
 
     @Override
