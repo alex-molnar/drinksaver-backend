@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface BeerFlavoursTable extends JpaRepository<BeerFlavour, Integer> {
-    List<BeerFlavour> findAllByBrandIdAndUserId(Integer brandId, UUID userId);
+    List<BeerFlavour> findAllByBrandIdAndUserIdIn(Integer brandId, List<UUID> userId);
 }

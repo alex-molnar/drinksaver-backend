@@ -1,5 +1,6 @@
 package com.drinksaver.repository.postgres;
 
+import com.drinksaver.config.RepositoryConfiguration;
 import com.drinksaver.model.db.BeerFlavour;
 import com.drinksaver.model.db.Brand;
 import com.drinksaver.model.db.ConsumptionType;
@@ -20,24 +21,25 @@ import java.util.stream.Stream;
 
 @Repository
 public class PostgresBeerRepository implements BeerRepository {
-    private final static UUID SHARED_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
     private final BrandsTable brandsTable;
     private final ConsumptionTypesTable consumptionTypesTable;
     private final SavedBeersTable savedBeersTable;
     private final BeerFlavoursTable beerFlavoursTable;
+    private final RepositoryConfiguration repositoryConfiguration;
 
     @Autowired
     public PostgresBeerRepository(
             BrandsTable brandsTable,
             ConsumptionTypesTable consumptionTypesTable,
             SavedBeersTable savedBeersTable,
-            BeerFlavoursTable beerFlavoursTable
+            BeerFlavoursTable beerFlavoursTable,
+            RepositoryConfiguration repositoryConfiguration
     ) {
         this.brandsTable = brandsTable;
         this.consumptionTypesTable = consumptionTypesTable;
         this.savedBeersTable = savedBeersTable;
         this.beerFlavoursTable = beerFlavoursTable;
+        this.repositoryConfiguration = repositoryConfiguration;
     }
 
     @Override
@@ -47,10 +49,10 @@ public class PostgresBeerRepository implements BeerRepository {
 
     @Override
     public List<Brand> getBrands(UUID userId) {
-        return Stream.concat(
-            brandsTable.findAllByUserId(userId).stream(),
-            brandsTable.findAllByUserId(SHARED_USER_ID).stream()
-        ).toList();
+        return brandsTable.findAllByUserIdIn(Stream.concat(
+            repositoryConfiguration.adminUserList().stream(),
+            Stream.of(userId)
+        ).toList());
     }
 
     @Override
@@ -72,10 +74,10 @@ public class PostgresBeerRepository implements BeerRepository {
 
     @Override
     public List<BeerFlavour> getBeerFlavours(Integer brandId, UUID userId) {
-        return Stream.concat(
-            beerFlavoursTable.findAllByBrandIdAndUserId(brandId, SHARED_USER_ID).stream(),
-            beerFlavoursTable.findAllByBrandIdAndUserId(brandId, userId).stream()
-        ).toList();
+        return beerFlavoursTable.findAllByBrandIdAndUserIdIn(brandId, Stream.concat(
+            repositoryConfiguration.adminUserList().stream(),
+            Stream.of(userId)
+        ).toList());
     }
 
     @Override

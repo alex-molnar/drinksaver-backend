@@ -1,5 +1,6 @@
 package com.drinksaver.repository.postgres;
 
+import com.drinksaver.config.RepositoryConfiguration;
 import com.drinksaver.model.db.AlcoholSubtype;
 import com.drinksaver.model.db.AlcoholType;
 import com.drinksaver.model.db.AlcoholVolume;
@@ -19,16 +20,16 @@ import java.util.stream.Stream;
 
 @Repository
 public class PostgresAlcoholRepository implements AlcoholRepository {
-    private final static UUID SHARED_USER_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
-
     private final AlcoholTypesTable alcoholTypesTable;
     private final AlcoholSubtypesTable alcoholSubtypesTable;
     private final AlcoholVolumeTable alcoholVolumeTable;
+    private final RepositoryConfiguration repositoryConfiguration;
 
-    public PostgresAlcoholRepository(AlcoholTypesTable alcoholTypesTable, AlcoholSubtypesTable alcoholSubtypesTable, AlcoholVolumeTable alcoholVolumeTable) {
+    public PostgresAlcoholRepository(AlcoholTypesTable alcoholTypesTable, AlcoholSubtypesTable alcoholSubtypesTable, AlcoholVolumeTable alcoholVolumeTable, RepositoryConfiguration repositoryConfiguration) {
         this.alcoholTypesTable = alcoholTypesTable;
         this.alcoholSubtypesTable = alcoholSubtypesTable;
         this.alcoholVolumeTable = alcoholVolumeTable;
+        this.repositoryConfiguration = repositoryConfiguration;
     }
 
     @Override
@@ -38,18 +39,18 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
 
     @Override
     public List<AlcoholType> getAlcoholTypes(UUID userId) {
-        return Stream.concat(
-            alcoholTypesTable.findAllByUserId(userId).stream(),
-            alcoholTypesTable.findAllByUserId(SHARED_USER_ID).stream()
-        ).toList();
+        return alcoholTypesTable.findAllByUserIdIn(Stream.concat(
+            repositoryConfiguration.adminUserList().stream(),
+            Stream.of(userId)
+        ).toList());
     }
 
     @Override
     public List<AlcoholSubtype> getSubtypesByAlcoholType(Integer alcoholTypeId, UUID userId) {
-        return Stream.concat(
-            alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserId(alcoholTypeId, userId).stream(),
-            alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserId(alcoholTypeId, SHARED_USER_ID).stream()
-        ).toList();
+        return alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserIdIn(alcoholTypeId, Stream.concat(
+            repositoryConfiguration.adminUserList().stream(),
+            Stream.of(userId)
+        ).toList());
     }
 
     @Override
