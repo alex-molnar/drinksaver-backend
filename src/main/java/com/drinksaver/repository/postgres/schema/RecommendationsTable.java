@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface RecommendationsTable extends JpaRepository<Recommendation, Integer> {
-    List<Recommendation> getRecommendationsByUserId(UUID userId);
+    List<Recommendation> findByUserIdIn(List<UUID> userIds);
 }

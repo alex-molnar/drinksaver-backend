@@ -1,8 +1,7 @@
 package com.drinksaver.controller;
 
 import com.drinksaver.model.db.Recommendation;
-import com.drinksaver.repository.RecommendationRepository;
-import com.drinksaver.service.InjectorService;
+import com.drinksaver.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,16 +12,16 @@ import java.util.UUID;
 @RequestMapping("/v1/recommendations")
 public class RecommendationsController {
 
-    private final RecommendationRepository recommendationRepository;
+    private final RecommendationService recommendationService;
 
     @Autowired
-    public RecommendationsController(InjectorService injectorService) {
-        this.recommendationRepository = injectorService.getRecommendationsRepository();
+    public RecommendationsController(RecommendationService recommendationService) {
+        this.recommendationService = recommendationService;
     }
 
     @GetMapping("/{userId}/list")
     public List<Recommendation> getRecommendationsList(@PathVariable UUID userId) {
-        return recommendationRepository.getRecommendations(userId);
+        return recommendationService.getRecommendations(userId);
     }
 }
 
