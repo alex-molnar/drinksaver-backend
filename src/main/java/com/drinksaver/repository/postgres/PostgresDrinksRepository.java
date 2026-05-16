@@ -7,6 +7,8 @@ import com.drinksaver.repository.postgres.schema.SavedDrinksTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.stream.IntStream;
+
 @Repository
 public class PostgresDrinksRepository implements DrinksRepository {
     private final SavedDrinksTable savedDrinksTable;
@@ -23,6 +25,10 @@ public class PostgresDrinksRepository implements DrinksRepository {
 
     @Override
     public SavedDrink saveDrink(Drink drink) {
-        return savedDrinksTable.save(SavedDrink.of(drink));
+        return drink.quantity() == null
+            ? savedDrinksTable.save(SavedDrink.of(drink))
+            : savedDrinksTable.saveAll(
+                IntStream.range(0, drink.quantity()).mapToObj(i -> SavedDrink.of(drink)).toList()
+            ).getFirst();
     }
 }

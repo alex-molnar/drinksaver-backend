@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Repository
@@ -87,6 +88,10 @@ public class PostgresBeerRepository implements BeerRepository {
 
     @Override
     public SavedBeer saveBeer(Beer beer) {
-        return savedBeersTable.save(SavedBeer.of(beer));
+        return beer.quantity() == null
+            ? savedBeersTable.save(SavedBeer.of(beer))
+            : savedBeersTable.saveAll(
+                    IntStream.range(0, beer.quantity()).mapToObj(i -> SavedBeer.of(beer)).toList()
+            ).getFirst();
     }
 }
