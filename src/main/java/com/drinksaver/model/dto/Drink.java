@@ -9,6 +9,9 @@ public record Drink(
         Integer alcoholTypeId,
         Integer alcoholSubtypeId,
         Integer alcoholVolumeId,
+        Integer brandId,
+        Integer beerFlavourId,
+        Integer consumptionTypeId,
         String comments,
         Integer quantity
 ) {}

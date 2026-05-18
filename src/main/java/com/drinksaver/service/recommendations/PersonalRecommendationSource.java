@@ -1,7 +1,6 @@
 package com.drinksaver.service.recommendations;
 
 import com.drinksaver.config.RepositoryConfiguration;
-import com.drinksaver.repository.postgres.schema.SavedBeersTable;
 import com.drinksaver.repository.postgres.schema.SavedDrinksTable;
 import com.drinksaver.service.model.DrinkKey;
 import com.drinksaver.service.recommendations.api.RecommendationSource;
@@ -13,7 +12,6 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class PersonalRecommendationSource implements RecommendationSource {
@@ -22,43 +20,31 @@ public class PersonalRecommendationSource implements RecommendationSource {
 
     private final RepositoryConfiguration repositoryConfiguration;
     private final SavedDrinksTable savedDrinksTable;
-    private final SavedBeersTable savedBeersTable;
 
     public PersonalRecommendationSource(
         RepositoryConfiguration repositoryConfiguration,
-        SavedDrinksTable savedDrinksTable,
-        SavedBeersTable savedBeersTable
+        SavedDrinksTable savedDrinksTable
     ) {
         this.repositoryConfiguration = repositoryConfiguration;
         this.savedDrinksTable = savedDrinksTable;
-        this.savedBeersTable = savedBeersTable;
     }
 
     @Override
     public Map<DrinkKey, Double> buildRecommendation(UUID userId) {
         LocalDate today = LocalDate.now();
 
-        return Stream.concat(
-            savedDrinksTable
-                .findByUserId(userId)
-                .stream()
-                .filter(drink -> !drink.getAlcoholTypeId().equals(repositoryConfiguration.beerId())) // Exclude beers from saved drinks
-                .map(drink -> new AbstractMap.SimpleEntry<DrinkKey, Double>(
-                        DrinkKey.of(drink),
-                        Math.pow(repositoryConfiguration.decayFactor(), calculateDaysSince(drink.getDate(), today))
-                )),
-            savedBeersTable
-                .findByUserId(userId)
-                .stream()
-                .map(beer -> new AbstractMap.SimpleEntry<DrinkKey, Double>(
-                        DrinkKey.of(beer),
-                        Math.pow(repositoryConfiguration.decayFactor(), calculateDaysSince(beer.getDate(), today))
-                ))
-        ).collect(Collectors.toMap(
-            Map.Entry::getKey,
-            Map.Entry::getValue,
-            Double::sum
-        ));
+        return savedDrinksTable
+            .findByUserId(userId)
+            .stream()
+            .map(drink -> new AbstractMap.SimpleEntry<>(
+                    DrinkKey.of(drink),
+                    Math.pow(repositoryConfiguration.decayFactor(), calculateDaysSince(drink.getDate(), today))
+            ))
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                Double::sum
+            ));
     }
 
     private long calculateDaysSince(String dateStr, LocalDate today) {

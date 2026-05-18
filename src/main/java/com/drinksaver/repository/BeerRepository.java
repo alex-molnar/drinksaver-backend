@@ -3,8 +3,6 @@ package com.drinksaver.repository;
 import com.drinksaver.model.db.BeerFlavour;
 import com.drinksaver.model.db.Brand;
 import com.drinksaver.model.db.ConsumptionType;
-import com.drinksaver.model.db.SavedBeer;
-import com.drinksaver.model.dto.Beer;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +14,5 @@ public interface BeerRepository {
     Brand saveBrand(UUID userId, String name, List<String> flavours);
     List<BeerFlavour> getBeerFlavours(Integer brandId, UUID userId);
     BeerFlavour saveBeerFlavour(Integer brandId, UUID userId, String name);
-    SavedBeer saveBeer(Beer beer);
 }
 

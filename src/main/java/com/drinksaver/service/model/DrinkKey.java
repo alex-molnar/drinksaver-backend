@@ -1,7 +1,6 @@
 package com.drinksaver.service.model;
 
 import com.drinksaver.model.db.Recommendation;
-import com.drinksaver.model.db.SavedBeer;
 import com.drinksaver.model.db.SavedDrink;
 import com.drinksaver.model.db.TemporaryRecommendation;
 
@@ -50,18 +49,6 @@ public record DrinkKey(
                 null,
                 null,
                 null,
-                Optional.empty()
-        );
-    }
-
-    public static DrinkKey of(SavedBeer beer) {
-        return new DrinkKey(
-                beer.getAlcoholTypeId(),
-                beer.getAlcoholSubtypeId(),
-                beer.getAlcoholVolumeId(),
-                beer.getBrandId(),
-                beer.getBeerFlavourId(),
-                beer.getConsumptionTypeId(),
                 Optional.empty()
         );
     }

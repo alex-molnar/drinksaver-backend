@@ -4,27 +4,22 @@ import com.drinksaver.config.RepositoryConfiguration;
 import com.drinksaver.model.db.BeerFlavour;
 import com.drinksaver.model.db.Brand;
 import com.drinksaver.model.db.ConsumptionType;
-import com.drinksaver.model.db.SavedBeer;
-import com.drinksaver.model.dto.Beer;
 import com.drinksaver.repository.BeerRepository;
 import com.drinksaver.repository.postgres.schema.BeerFlavoursTable;
 import com.drinksaver.repository.postgres.schema.BrandsTable;
 import com.drinksaver.repository.postgres.schema.ConsumptionTypesTable;
-import com.drinksaver.repository.postgres.schema.SavedBeersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Repository
 public class PostgresBeerRepository implements BeerRepository {
     private final BrandsTable brandsTable;
     private final ConsumptionTypesTable consumptionTypesTable;
-    private final SavedBeersTable savedBeersTable;
     private final BeerFlavoursTable beerFlavoursTable;
     private final RepositoryConfiguration repositoryConfiguration;
 
@@ -32,13 +27,11 @@ public class PostgresBeerRepository implements BeerRepository {
     public PostgresBeerRepository(
             BrandsTable brandsTable,
             ConsumptionTypesTable consumptionTypesTable,
-            SavedBeersTable savedBeersTable,
             BeerFlavoursTable beerFlavoursTable,
             RepositoryConfiguration repositoryConfiguration
     ) {
         this.brandsTable = brandsTable;
         this.consumptionTypesTable = consumptionTypesTable;
-        this.savedBeersTable = savedBeersTable;
         this.beerFlavoursTable = beerFlavoursTable;
         this.repositoryConfiguration = repositoryConfiguration;
     }
@@ -84,14 +77,5 @@ public class PostgresBeerRepository implements BeerRepository {
     @Override
     public BeerFlavour saveBeerFlavour(Integer brandId, UUID userId, String name) {
         return beerFlavoursTable.save(new BeerFlavour(brandId, userId, name));
-    }
-
-    @Override
-    public SavedBeer saveBeer(Beer beer) {
-        return beer.quantity() == null
-            ? savedBeersTable.save(SavedBeer.of(beer))
-            : savedBeersTable.saveAll(
-                    IntStream.range(0, beer.quantity()).mapToObj(i -> SavedBeer.of(beer)).toList()
-            ).getFirst();
     }
 }
