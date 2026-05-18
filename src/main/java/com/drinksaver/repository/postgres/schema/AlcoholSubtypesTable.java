@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface AlcoholSubtypesTable extends JpaRepository<AlcoholSubtype, Integer> {
-    List<AlcoholSubtype> findAllByAlcoholTypeIdAndUserIdIn(Integer alcoholTypeId, List<UUID> userId);
+    List<AlcoholSubtype> findAllByAlcoholTypeIdAndUserIdInOrderByNameAsc(Integer alcoholTypeId, List<UUID> userId);
 }

@@ -39,7 +39,7 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
 
     @Override
     public List<AlcoholType> getAlcoholTypes(UUID userId) {
-        return alcoholTypesTable.findAllByUserIdIn(Stream.concat(
+        return alcoholTypesTable.findAllByUserIdInOrderByNameAsc(Stream.concat(
             repositoryConfiguration.adminUserList().stream(),
             Stream.of(userId)
         ).toList());
@@ -47,7 +47,7 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
 
     @Override
     public List<AlcoholSubtype> getSubtypesByAlcoholType(Integer alcoholTypeId, UUID userId) {
-        return alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserIdIn(alcoholTypeId, Stream.concat(
+        return alcoholSubtypesTable.findAllByAlcoholTypeIdAndUserIdInOrderByNameAsc(alcoholTypeId, Stream.concat(
             repositoryConfiguration.adminUserList().stream(),
             Stream.of(userId)
         ).toList());
