@@ -2,7 +2,6 @@ package com.drinksaver.service.model;
 
 import com.drinksaver.model.db.Recommendation;
 import com.drinksaver.model.db.SavedDrink;
-import com.drinksaver.model.db.TemporaryRecommendation;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -54,18 +53,6 @@ public record DrinkKey(
     }
 
     public static DrinkKey of(Recommendation recommendation) {
-        return new DrinkKey(
-                recommendation.getAlcoholTypeId(),
-                recommendation.getAlcoholSubtypeId(),
-                recommendation.getAlcoholVolumeId(),
-                recommendation.getBrandId(),
-                recommendation.getBeerFlavourId(),
-                recommendation.getConsumptionTypeId(),
-                Optional.ofNullable(recommendation.getName())
-        );
-    }
-
-    public static DrinkKey of(TemporaryRecommendation recommendation) {
         return new DrinkKey(
                 recommendation.getAlcoholTypeId(),
                 recommendation.getAlcoholSubtypeId(),

@@ -30,6 +30,11 @@ public class RecommendationCacheService {
             return;
         }
 
+        if (drink.shouldAddToRecommendations()) {
+            invalidateRecommendations(drink.userId());
+            return;
+        }
+
         AtomicInteger counter = counterCache.get(drink.userId(), AtomicInteger.class);
         if (counter == null) {
             counter = new AtomicInteger(0);

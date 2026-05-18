@@ -13,5 +13,16 @@ public record Drink(
         Integer beerFlavourId,
         Integer consumptionTypeId,
         String comments,
-        Integer quantity
-) {}
+        Integer quantity,
+        Boolean addToRecommendations,
+        Boolean onlyTemporarily,
+        String name
+) {
+    public Boolean shouldAddToRecommendations() {
+        return addToRecommendations != null && addToRecommendations;
+    }
+
+    public Boolean shouldAddEndDate() {
+        return onlyTemporarily != null && onlyTemporarily;
+    }
+}

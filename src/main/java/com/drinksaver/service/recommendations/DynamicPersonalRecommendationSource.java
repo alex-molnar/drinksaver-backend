@@ -14,14 +14,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class PersonalRecommendationSource implements RecommendationSource {
+public class DynamicPersonalRecommendationSource implements RecommendationSource {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
 
     private final RepositoryConfiguration repositoryConfiguration;
     private final SavedDrinksTable savedDrinksTable;
 
-    public PersonalRecommendationSource(
+    public DynamicPersonalRecommendationSource(
         RepositoryConfiguration repositoryConfiguration,
         SavedDrinksTable savedDrinksTable
     ) {

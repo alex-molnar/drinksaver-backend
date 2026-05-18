@@ -1,8 +1,10 @@
 package com.drinksaver.repository.postgres;
 
+import com.drinksaver.model.db.Recommendation;
 import com.drinksaver.model.db.SavedDrink;
 import com.drinksaver.model.dto.Drink;
 import com.drinksaver.repository.DrinksRepository;
+import com.drinksaver.repository.postgres.schema.RecommendationsTable;
 import com.drinksaver.repository.postgres.schema.SavedDrinksTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -12,10 +14,12 @@ import java.util.stream.IntStream;
 @Repository
 public class PostgresDrinksRepository implements DrinksRepository {
     private final SavedDrinksTable savedDrinksTable;
+    private final RecommendationsTable recommendationsTable;
 
     @Autowired
-    PostgresDrinksRepository(SavedDrinksTable savedDrinksTable) {
+    PostgresDrinksRepository(SavedDrinksTable savedDrinksTable, RecommendationsTable recommendationsTable) {
         this.savedDrinksTable = savedDrinksTable;
+        this.recommendationsTable = recommendationsTable;
     }
 
     @Override
@@ -25,6 +29,10 @@ public class PostgresDrinksRepository implements DrinksRepository {
 
     @Override
     public SavedDrink saveDrink(Drink drink) {
+        if (drink.shouldAddToRecommendations()) {
+            recommendationsTable.save(Recommendation.of(drink));
+        }
+
         return drink.quantity() == null
             ? savedDrinksTable.save(SavedDrink.of(drink))
             : savedDrinksTable.saveAll(
