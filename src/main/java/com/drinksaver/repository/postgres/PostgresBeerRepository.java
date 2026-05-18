@@ -43,7 +43,7 @@ public class PostgresBeerRepository implements BeerRepository {
 
     @Override
     public List<Brand> getBrands(UUID userId) {
-        return brandsTable.findAllByUserIdIn(Stream.concat(
+        return brandsTable.findAllByUserIdInOrderByName(Stream.concat(
             repositoryConfiguration.adminUserList().stream(),
             Stream.of(userId)
         ).toList());
