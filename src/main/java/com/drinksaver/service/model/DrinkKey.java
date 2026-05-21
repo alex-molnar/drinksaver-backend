@@ -3,6 +3,7 @@ package com.drinksaver.service.model;
 import com.drinksaver.model.db.Recommendation;
 import com.drinksaver.model.db.SavedDrink;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +16,19 @@ public record DrinkKey(
         Integer consumptionTypeId,
         Optional<String> name
 ) {
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        DrinkKey drinkKey = (DrinkKey) other;
+        return Objects.equals(alcoholTypeId, drinkKey.alcoholTypeId) &&
+                Objects.equals(alcoholSubtypeId, drinkKey.alcoholSubtypeId) &&
+                Objects.equals(alcoholVolumeId, drinkKey.alcoholVolumeId) &&
+                Objects.equals(brandId, drinkKey.brandId) &&
+                Objects.equals(beerFlavourId, drinkKey.beerFlavourId) &&
+                Objects.equals(consumptionTypeId, drinkKey.consumptionTypeId);
+    }
+
     public Recommendation toRecommendation(UUID userId) {
         Recommendation recommendation = new Recommendation();
         recommendation.setUserId(userId);
