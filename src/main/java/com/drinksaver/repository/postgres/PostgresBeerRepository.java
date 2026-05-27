@@ -57,12 +57,14 @@ public class PostgresBeerRepository implements BeerRepository {
     @Override
     public Brand saveBrand(UUID userId, String name, List<String> flavours) {
         Brand result = brandsTable.save(new Brand(userId, name));
-        beerFlavoursTable.saveAll(
-            flavours
-                .stream()
-                .map(flavour -> new BeerFlavour(result.getId(), userId, flavour))
-                .toList()
-        );
+        if(flavours != null && !flavours.isEmpty()) {
+            beerFlavoursTable.saveAll(
+                    flavours
+                            .stream()
+                            .map(flavour -> new BeerFlavour(result.getId(), userId, flavour))
+                            .toList()
+            );
+        }
         return result;
     }
 

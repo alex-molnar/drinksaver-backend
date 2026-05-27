@@ -14,6 +14,7 @@ import com.drinksaver.repository.postgres.schema.AlcoholVolumeTable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -81,17 +82,21 @@ public class PostgresAlcoholRepository implements AlcoholRepository {
     @Override
     public AlcoholType createAlcoholType(NewAlcoholEntry newAlcoholEntry) {
         // TODO in transaction
-        List<Integer> volumeIds = newAlcoholEntry.volumes()
+        List<Integer> volumeIds = newAlcoholEntry.volumes() != null
+            ? newAlcoholEntry.volumes()
                 .stream()
                 .map(newEntry -> alcoholVolumeTable.save(AlcoholVolume.of(newEntry)).getId())
-                .toList();
-        AlcoholType result = alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIds));
-        alcoholSubtypesTable.saveAll(
-            newAlcoholEntry.alcoholSubtypes()
-                .stream()
-                .map(subtype -> new AlcoholSubtype(result.getId(), newAlcoholEntry.userId(), subtype))
                 .toList()
-        );
+            : Collections.emptyList();
+        AlcoholType result = alcoholTypesTable.save(new AlcoholType(newAlcoholEntry.userId(), newAlcoholEntry.name(), volumeIds));
+        if (newAlcoholEntry.alcoholSubtypes() != null && !newAlcoholEntry.alcoholSubtypes().isEmpty()) {
+            alcoholSubtypesTable.saveAll(
+                    newAlcoholEntry.alcoholSubtypes()
+                            .stream()
+                            .map(subtype -> new AlcoholSubtype(result.getId(), newAlcoholEntry.userId(), subtype))
+                            .toList()
+            );
+        }
         return result;
     }
 }
