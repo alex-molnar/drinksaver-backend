@@ -54,7 +54,7 @@ public class BeerNameCollector {
 
     private String getAlcoholVolumeName(Integer alcoholVolumeId, Integer consumptionTypeId) {
         return consumptionTypesTable
-                .findById(consumptionTypeId)
+            .findById(consumptionTypeId)
             .map(consumptionType -> String.format("(%s%s)", consumptionType.getName(), getVolumeName(alcoholVolumeId)))
             .orElse(getVolumeName(alcoholVolumeId));
     }

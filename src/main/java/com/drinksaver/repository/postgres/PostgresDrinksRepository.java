@@ -9,6 +9,8 @@ import com.drinksaver.repository.postgres.schema.SavedDrinksTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 @Repository
@@ -38,5 +40,15 @@ public class PostgresDrinksRepository implements DrinksRepository {
             : savedDrinksTable.saveAll(
                 IntStream.range(0, drink.quantity()).mapToObj(i -> SavedDrink.of(drink)).toList()
             ).getFirst();
+    }
+
+    @Override
+    public List<SavedDrink> getSavedDrinks(UUID userId, String date) {
+        return savedDrinksTable.findByUserIdAndDate(userId, date);
+    }
+
+    @Override
+    public int deleteSavedDrink(List<Integer> drinkIds) {
+        return savedDrinksTable.deleteAndCountByIds(drinkIds);
     }
 }

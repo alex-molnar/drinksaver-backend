@@ -59,9 +59,9 @@ public record DrinkKey(
                 drink.getAlcoholTypeId(),
                 drink.getAlcoholSubtypeId(),
                 drink.getAlcoholVolumeId(),
-                null,
-                null,
-                null,
+                drink.getBrandId(),
+                drink.getBeerFlavourId(),
+                drink.getConsumptionTypeId(),
                 Optional.empty()
         );
     }
